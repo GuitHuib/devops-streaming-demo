@@ -38,22 +38,13 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: Package
-          path: build/libs
+          path: build/libs/test
 
-
-
-
-          #      - name: Upload JAR artifact
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: my-app-artifact
-#          path: /build/libs/**.jar
-#
-#      - name: Download JAR artifact
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: my-app-artifact
-#          path: /build/libs/**.jar
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Package
+          path: build/libs/test
           
 
   Deploy:
@@ -61,14 +52,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - name: Download Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: Package
-          path: build/libs
-
-
       - name: Deploy in EC2
         env:
           PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
@@ -78,9 +61,11 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
+          scp -o StrictHostKeyChecking=no -i private_key build/libs/test/**.jar ubuntu@35.174.101.105:build/libs/
+
           docker-compose -f docker-compose.yaml up -d --build
           
-
+          
 
 #jobs:
 #  build:
