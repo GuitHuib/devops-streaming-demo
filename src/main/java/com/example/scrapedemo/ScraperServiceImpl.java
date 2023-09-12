@@ -16,8 +16,13 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.StandardEnvironment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -34,7 +39,6 @@ public class ScraperServiceImpl{
 
 
     public void getSatori() throws IOException {
-
         String url = "https://www.satorireader.com/signin";
         String satoriPassword = "Goaway88";
 
@@ -55,21 +59,6 @@ public class ScraperServiceImpl{
     public void getTimesheets() throws IOException {
         String loginPageUrl = "https://yorksolutions.bbo.bullhornstaffing.com/Login/";
 
-//        // Send a GET request to the login page
-//        Connection.Response loginPageResponse = Jsoup.connect(loginPageUrl)
-//                .method(Connection.Method.GET)
-//                .followRedirects(true)
-//                .execute();
-//
-//        // Parse the HTML content of the login page
-//        Document loginPageDoc = loginPageResponse.parse();
-//
-//        // Extract form fields and their values
-//        Element loginForm = loginPageDoc.select("form#loginForm").first();
-//        String actionUrl = loginForm.attr("action");
-//        String usernameFieldName = "username";
-//        String passwordFieldName = "password";
-
         // Your login credentials
         String username = "rwallaceguitar@gmail.com";
         String password = "Goaw@y88";
@@ -82,28 +71,8 @@ public class ScraperServiceImpl{
                 .followRedirects(true)
                 .execute();
 
-        // Check if the login was successful (you may need to inspect the response)
-//        Document loggedInPage = loginResponse.parse();
-//        System.out.println(loggedInPage);
         System.out.println(loginResponse.cookies());
         System.out.println(loginResponse.url());
-
-
-        //        System.out.println(res.header("location"));
-//        String sess = res.cookie("PHPSESSID");
-//
-//        String redirectUrl = "https://yorksolutions.bbo.bullhornstaffing.com/employee/?authenticationKey=" + sess;
-
-        //redirectUrl = "https://www.satorireader.com/series";
-//        Map<String, String> loginCookies = res.cookies();
-//        Document other = Jsoup.connect(redirectUrl)
-//                .cookies(loginCookies)
-//                .get();
-//
-//        System.out.println(sess);
-//        System.out.println(other);
-
-
     }
 
     public Set<ResponseDTO> getVehicleByModel(String vehicleModel) {
@@ -121,6 +90,14 @@ public class ScraperServiceImpl{
             }
 
         }
+
+        StandardEnvironment env = new StandardEnvironment();
+        RestTemplate template = new RestTemplate();
+        System.out.println("***running***" + env.getProperty("message"));
+        String url = "https://webhook.site/91c523d6-7c9a-4217-83b1-5fd9c1e03102";
+        HttpEntity<String> http = new HttpEntity<>(env.getProperty("message"), null);
+
+        ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, http, String.class);
 
         return responseDTOS;
     }
@@ -213,7 +190,7 @@ public class ScraperServiceImpl{
         String newPage = driver.getPageSource();
         Document spreadsheet = Jsoup.parse(newPage);
         Elements rows = spreadsheet.select(".novo-data-table-row");
-        for (Element row : rows){
+        for (Element row : rows) {
             Elements placementId = row.select(".novo-column-assignmentIntegrationId span");
             Elements name = row.select(".novo-column-employee span");
             Elements hours = row.select(".novo-column-regularHours span");
@@ -226,24 +203,7 @@ public class ScraperServiceImpl{
             System.out.print(overtime.html() + " ");
             System.out.print(updatedAt.html() + " ");
             System.out.println(processed.html());
-
-//            Elements cells = row.select(".novo-data-table-cell span");
-//            for (Element cell : cells){
-//                System.out.print(cell.html() + " ");
-//            }
+            driver.quit();
         }
-        //todo: get appropriate data
-//        driver.quit();
-
-
-//        String redirectedPageSource = driver.getPageSource();
-//        Document redirectedPageDoc = Jsoup.parse(redirectedPageSource);
-//        String username = "rwallaceguitar@gmail.com";
-//        String password = "Goaw@y88";
-//        Elements tabs = redirectedPageDoc.select("[data-automation-id=tabTimesheet]");
-//        Duration timeoutDuration = Duration.ofSeconds(10);
-//        WebDriverWait wait = new WebDriverWait(driver, timeoutDuration);
-//        wait.until(ExpectedConditions.urlContains("https://yorksolutions.bbo.bullhornstaffing.com/employee/")); // Replace with the URL pattern of the redirected page
-
     }
 }

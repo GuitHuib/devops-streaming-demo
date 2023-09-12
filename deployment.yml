@@ -1,0 +1,141 @@
+- name: Provision Infrastructure
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - vars.yml
+  environment:
+    ANSIBLE_HOST_KEY_CHECKING: False
+
+  tasks:
+    - name: Install necessary packages on local
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - unzip
+        - python3-pip
+        - docker.io
+        - docker-compose
+      become: yes
+
+    - name: Install necessary python packages on local
+      pip:
+        name: docker-compose
+        state: present
+        executable: pip3
+
+    - name: Run terraform
+      community.general.terraform:
+        project_path: "{{ local_terraform_directory }}"
+        force_init: true
+        state: present
+      register: terraform_output
+
+    - name: Parse terraform output
+      set_fact:
+        server_public_ip: "{{ terraform_output.outputs.server_public_ip.value }}"
+
+    - name: Add new host to inventory
+      add_host:
+        hostname: "{{ server_public_ip }}"
+        groups: webservers
+
+#    - name: Save Local Docker Image
+#      docker_image:
+#        name: sync-app:tag
+#        save_dest: sync-app.tar
+#        state: save
+#
+#    - name: archive container image as a tarball
+#      docker_image:
+#        name: sync-app:v1.0
+#        archive_path: ./sync-app.tar
+#        source: pull
+#        state: present
+#
+#    - name: fetch archived image
+#      fetch:
+#        src: sync-app.tar
+#        dest: sync-app.tar
+#        flat: true
+
+
+- name: Deploy and Setup Spring Boot app
+  hosts: webservers
+  gather_facts: no
+  vars_files:
+    - vars.yml
+  become: yes
+
+  tasks:
+    - name: Wait for SSH to become available
+      wait_for_connection:
+        delay: 10
+        timeout: 320
+    - name: Update package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install necessary packages on remote
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - openjdk-17-jdk
+        - unzip
+        - python3-pip
+        - docker.io
+        - docker-compose
+
+- name: Run Docker Compose
+  hosts: webservers
+  vars_files:
+    - vars.yml
+  become: yes
+  tasks:
+    - name: Ensure Docker service is running
+      systemd:
+        name: docker
+        state: started
+
+#    - name: Copy Docker Image
+#      copy:
+#        src: /path/to/your-image.tar
+#        dest: /tmp/your-image.tar
+#
+        #    - name: Build Docker Image
+#      docker_image:
+#        name: scrape-demo:tag  # Specify the name and tag for your image
+#        source: build
+#        build:
+#          dockerfile: Dockerfile  # Path to your Dockerfile
+#          path: ./
+#
+#    - name: Display Build Output
+#      debug:
+#        var: build_result.stdout_lines
+
+    - name: Create Spring Boot directory
+      file:
+        path: ./build/libs
+        state: directory
+
+    - name: Copy Spring Boot app to server
+      copy:
+        src: ./build/libs/scrape-demo-0.0.1-SNAPSHOT.jar
+        dest: ./build/libs/scrape-demo-0.0.1-SNAPSHOT.jar
+        mode: '0755'
+
+    - name: Transfer Dockerfile
+      copy:
+        src: ./Dockerfile
+        dest: Dockerfile
+
+    - name: Transfer Docker Compose Files
+      copy:
+        src: ./docker-compose.yaml
+        dest: docker-compose.yaml
+
+    - name: Run Docker Compose
+      command: docker-compose -f docker-compose.yaml up -d

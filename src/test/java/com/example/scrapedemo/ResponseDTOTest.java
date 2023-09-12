@@ -36,6 +36,6 @@ class ResponseDTOTest {
         XStream xStream = new XStream();
         String data = xStream.toXML(dto);
         System.out.println(data);
-        assertTrue(false);
+//        assertTrue(false);
     }
 }

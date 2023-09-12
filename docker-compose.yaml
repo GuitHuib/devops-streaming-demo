@@ -3,7 +3,7 @@ version: '3'
 services:
   db:
     image: 'postgres'
-    container_name: app-sync
+    container_name: scrape-demo
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -15,5 +15,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: myapp
     ports:
-      - 8080:8080
+      - "8080:8080"
+#    depends_on:
+#      - db
+#    environment:
+#      - SPRING.DATASOURCE.URL=jdbc:postgresql://db:5432/postgres
+#      - spring.datasource.username=postgres
+#      - spring.datasource.password=postgres
+#    restart: unless-stopped
