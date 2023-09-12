@@ -45,8 +45,12 @@ jobs:
           name: my-app-artifact
           path: "${{ github.workspace }}/build/libs/scrape-demo.jar"
 
-      - name: Build the docker_compose
-        run: docker-compose up -d --build
+      - name: List workspace contents
+        run: |
+          ls -R "${{ github.workspace }}"
+          
+          
+
 
   Deploy:
     needs: build
@@ -83,6 +87,8 @@ jobs:
 
 #               scp -o StrictHostKeyChecking=no -i private_key "${{ github.workspace }}/build/libs/scrape-demo.jar" ubuntu@35.174.101.105:/build/libs/
 
+#      - name: Build the docker_compose
+#        run: docker-compose up -d --build
 
 
 #    steps:
