@@ -38,7 +38,7 @@ jobs:
           arguments: build
 
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5
+        uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
