@@ -40,7 +40,14 @@ jobs:
           name: Package
           path: build/libs
 
-#      - name: Upload JAR artifact
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Package  # Replace with the name of your artifact
+          path: build/libs  # Specify the destination path
+
+
+          #      - name: Upload JAR artifact
 #        uses: actions/upload-artifact@v2
 #        with:
 #          name: my-app-artifact
