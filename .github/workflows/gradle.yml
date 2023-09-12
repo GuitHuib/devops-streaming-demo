@@ -35,15 +35,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+        uses: gradle/gradle-build-action@v2 # bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
         with:
           arguments: build
 
       - name: Build the docker_compose
         run: docker-compose up -d --build
-
-#      - name: Buid the application
-#        run: docker-compose exec -T myapp build
 
   Deploy:
     needs: build
@@ -66,11 +63,17 @@ jobs:
             git fetch --all &&
             git reset --hard origin/master &&
             git pull origin master &&
+            ./gradlew build
             docker-compose -f docker-compose.yaml up -d --build
+          
+          
+
 #jobs:
 #  build:
 #    runs-on: ubuntu-latest
 #
+#               cd /home/ubuntu/CounterApp &&
+
 #    steps:
 #      - uses: actions/checkout@v3
 #
