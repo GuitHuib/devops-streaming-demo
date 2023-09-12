@@ -56,15 +56,16 @@ jobs:
 
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          scp -o StrictHostKeyChecking=no -i private_key "${{ github.workspace }}/build/libs/scrape-demo.jar" ubuntu@35.174.101.105:/build/libs/
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
-          
+               
             #Now we have got the access of EC2 and we will start the deploy .
-            git checkout master &&
-            git fetch --all &&
-            git reset --hard origin/master &&
-            git pull origin master &&
-            chmod +x gradlew
-            ./gradlew build
+#            git checkout master &&
+#            git fetch --all &&
+#            git reset --hard origin/master &&
+#            git pull origin master &&
+#            chmod +x gradlew
+#            ./gradlew build
             docker-compose -f docker-compose.yaml up -d --build
           
           
