@@ -72,7 +72,7 @@ jobs:
           USER_NAME : ${{ secrets.USER_NAME  }}
 
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 777 private_key
+          echo "$PRIVATE_KEY" > private_key && chmod 666 private_key
           scp -o StrictHostKeyChecking=no -i private_key build/libs/**.jar ubuntu@35.174.101.105:build/libs/
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
 
