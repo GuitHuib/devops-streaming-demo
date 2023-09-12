@@ -35,13 +35,8 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-app-artifact
-          path: "${{ github.workspace }}/build/libs/scrape-demo.jar"
+          path: /scrape-demo.jar
 
-      - name: Download JAR artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: my-app-artifact
-          path: "${{ github.workspace }}/build/libs/scrape-demo.jar"
           
 
   Deploy:
