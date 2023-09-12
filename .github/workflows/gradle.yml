@@ -37,6 +37,11 @@ jobs:
           name: my-app-artifact
           path: /scrape-demo.jar
 
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: my-app-artifact
+          path: /scrape-demo.jar
           
 
   Deploy:
