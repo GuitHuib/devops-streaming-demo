@@ -63,6 +63,7 @@ jobs:
             git fetch --all &&
             git reset --hard origin/master &&
             git pull origin master &&
+            chmod +x gradlew
             ./gradlew build
             docker-compose -f docker-compose.yaml up -d --build
           
