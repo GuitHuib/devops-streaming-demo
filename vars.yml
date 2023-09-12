@@ -6,6 +6,6 @@ local_springboot_jar_path: bullhorn-resource-sync-springboot-0.0.1-SNAPSHOT.jar
 remote_springboot_directory: /opt/springboot
 # This will need to be specific to the deployment machine. It is the path to the mainkey.pem downloaded from AWS
 # todo: put URL to .pem file from main.tf
-ansible_ssh_private_key_file: 
+ansible_ssh_private_key_file:
  ../ryan-demo.pem
 refresh_token: will-be-encrypted

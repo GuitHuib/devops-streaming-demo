@@ -7,15 +7,15 @@
     ANSIBLE_HOST_KEY_CHECKING: False
 
   tasks:
-    - name: Update package repositories
-      apt:
-        update_cache: yes
-      become: yes
+#    - name: Update package repositories
+#      apt:
+#        update_cache: yes
+#      become: yes
 
-    - name: Upgrade installed packages
-      apt:
-        upgrade: dist
-      become: yes
+#    - name: Upgrade installed packages
+#      apt:
+#        upgrade: dist
+#      become: yes
 
     - name: Install necessary packages on local
       apt:
@@ -24,8 +24,8 @@
       loop:
         - unzip
         - python3-pip
-#        - docker.io
-#        - docker-compose
+        - docker.io
+        - docker-compose
       become: yes
 
     - name: Install necessary python packages on local
@@ -40,8 +40,8 @@
         force_init: true
         state: present
       environment:
-        AWS_ACCESS_KEY_ID: "${{ secrets.aws_access_key }}"
-        AWS_SECRET_ACCESS_KEY: "${{ secrets.aws_secret_key }}"
+        AWS_ACCESS_KEY_ID: AKIA22GDOLHDTWZQDGXG
+        AWS_SECRET_ACCESS_KEY: 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
       register: terraform_output
       become: yes
 

@@ -18,7 +18,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -38,6 +37,34 @@ jobs:
         with:
           arguments: build
 
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: SSH into EC2 and copy JAR file
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ runner.workspace }}/${{ secrets.EC2_SSH_KEY }} ec2-user@YOUR_EC2_PUBLIC_IP 'mkdir -p ./build'
+          scp -i ${{ runner.workspace }}/${{ secrets.EC2_SSH_KEY }} ./build.jar ec2-user@YOUR_EC2_PUBLIC_IP:/path/on/ec2/
+
+
+
+
+#      - name: Set up SSH key
+#        run: |
+#          mkdir -p ~/.ssh
+#          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/your-ec2-key.pem
+#          chmod 600 ~/.ssh/your-ec2-key.pem
+#          ssh-keygen -y -f ~/.ssh/your-ec2-key.pem > ~/.ssh/id_rsa
+#          ssh-keyscan -H your-ec2-instance-ip >> ~/.ssh/known_hosts
+#        env:
+#          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+#
+#      - name: Copy JAR file
+#        run: scp -i ~/.ssh/your-ec2-key.pem path/to/your.jar ec2-user@your-ec2-instance-ip:/path/on/ec2/
+
+
+
 #      - name: Install Dependencies
 #        run: pip install ansible
 #
@@ -45,16 +72,16 @@ jobs:
 #        run: ansible-playbook deployment.yml
 
 
-  EC2-Deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.ref_name }}
-      url: 3.210.104.127
-    steps:
-      - id: deploy
-        name: Deploy
-        uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.0
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID}}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-          aws_default_region: us-east-1
+#  EC2-Deploy:
+#    runs-on: ubuntu-latest
+#    environment:
+#      name: ${{ github.ref_name }}
+#      url: 3.210.104.127
+#    steps:
+#      - id: deploy
+#        name: Deploy
+#        uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.0
+#        with:
+#          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+#          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+#          aws_default_region: us-east-1
