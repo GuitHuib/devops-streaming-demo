@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-app-artifact
-          path: build/libs/scrape-demo.jar
+          path: "${{ github.workspace }}/build/libs/scrape-demo.jar"
 
       - name: Build the docker_compose
         run: docker-compose up -d --build
@@ -62,7 +62,6 @@ jobs:
 
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          scp -o StrictHostKeyChecking=no -i private_key "${{ github.workspace }}/build/libs/scrape-demo.jar" ubuntu@35.174.101.105:/build/libs/
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
                
             #Now we have got the access of EC2 and we will start the deploy .
@@ -74,7 +73,11 @@ jobs:
 #  build:
 #    runs-on: ubuntu-latest
 #
-#               cd /home/ubuntu/CounterApp &&
+
+
+#               scp -o StrictHostKeyChecking=no -i private_key "${{ github.workspace }}/build/libs/scrape-demo.jar" ubuntu@35.174.101.105:/build/libs/
+
+
 
 #    steps:
 #      - uses: actions/checkout@v3
