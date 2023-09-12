@@ -66,7 +66,7 @@ jobs:
             git fetch --all &&
             git reset --hard origin/master &&
             git pull origin master &&
-            docker-compose -f docker-compose.yml up -d --build
+            docker-compose -f docker-compose.yaml up -d --build
 #jobs:
 #  build:
 #    runs-on: ubuntu-latest
