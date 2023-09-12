@@ -15,7 +15,7 @@
     - name: Upgrade installed packages
       apt:
         upgrade: dist
-        become: yes
+      become: yes
 
     - name: Install necessary packages on local
       apt:
