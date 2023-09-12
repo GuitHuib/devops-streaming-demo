@@ -24,8 +24,8 @@
       loop:
         - unzip
         - python3-pip
-        - docker.io
-        - docker-compose
+#        - docker.io
+#        - docker-compose
       become: yes
 
     - name: Install necessary python packages on local
