@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -31,6 +31,15 @@ jobs:
         with:
           arguments: build
 
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
+        with:
+          arguments: build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Package
+          path: build/libs
+
 #      - name: Upload JAR artifact
 #        uses: actions/upload-artifact@v2
 #        with:
@@ -44,27 +53,27 @@ jobs:
 #          path: /build/libs/**.jar
           
 
-  Deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Deploy in EC2
-        env:
-          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
-          HOSTNAME : 35.174.101.105
-          USER_NAME : ${{ secrets.USER_NAME  }}
-
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
-          
-          #Now we have got the access of EC2 and we will start the deploy
-          git fetch --all &&
-          git reset --hard origin/master &&
-          git pull origin master &&
-               
-          docker-compose -f docker-compose.yaml up -d --build
+#  Deploy:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Deploy in EC2
+#        env:
+#          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
+#          HOSTNAME : 35.174.101.105
+#          USER_NAME : ${{ secrets.USER_NAME  }}
+#
+#        run: |
+#          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+#          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
+#
+#          #Now we have got the access of EC2 and we will start the deploy
+#          git fetch --all &&
+#          git reset --hard origin/master &&
+#          git pull origin master &&
+#
+#          docker-compose -f docker-compose.yaml up -d --build
           
           
 
