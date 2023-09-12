@@ -42,4 +42,4 @@ jobs:
         run: pip install ansible
 
       - name: Run Ansible Playbook
-        run: ansible-playbook deploymeny.yml
+        run: ansible-playbook deployment.yml
