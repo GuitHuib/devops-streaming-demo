@@ -43,8 +43,8 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: Package  # Replace with the name of your artifact
-          path: build/libs  # Specify the destination path
+          name: Package
+          path: build/libs
 
 
           #      - name: Upload JAR artifact
@@ -60,27 +60,24 @@ jobs:
 #          path: /build/libs/**.jar
           
 
-#  Deploy:
-#    needs: build
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Deploy in EC2
-#        env:
-#          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
-#          HOSTNAME : 35.174.101.105
-#          USER_NAME : ${{ secrets.USER_NAME  }}
-#
-#        run: |
-#          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-#          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
-#
-#          #Now we have got the access of EC2 and we will start the deploy
-#          git fetch --all &&
-#          git reset --hard origin/master &&
-#          git pull origin master &&
-#
-#          docker-compose -f docker-compose.yaml up -d --build
+  Deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy in EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
+          HOSTNAME : 35.174.101.105
+          USER_NAME : ${{ secrets.USER_NAME  }}
+
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          scp -i private_key build/libs/**.jar ubuntu@35.174.101.105:build/libs/
+          
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
+
+          docker-compose -f docker-compose.yaml up -d --build
           
           
 
