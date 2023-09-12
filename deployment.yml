@@ -39,6 +39,9 @@
         project_path: "{{ local_terraform_directory }}"
         force_init: true
         state: present
+      environment:
+        AWS_ACCESS_KEY_ID: "${{ secrets.aws_access_key }}"
+        AWS_SECRET_ACCESS_KEY: "${{ secrets.aws_secret_key }}"
       register: terraform_output
       become: yes
 
