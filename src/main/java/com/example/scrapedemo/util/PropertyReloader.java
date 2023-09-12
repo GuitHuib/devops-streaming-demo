@@ -24,7 +24,7 @@ public class PropertyReloader {
     }
 
 
-    @Scheduled(fixedRate = 10000) // Reload properties every 3 seconds (adjust as needed)
+    @Scheduled(fixedRate = 10000)
     public void refreshProperties() {
         RestTemplate template = new RestTemplate();
         System.out.println("***running***" + env.getProperty("message"));
@@ -32,17 +32,5 @@ public class PropertyReloader {
         HttpEntity<String> http = new HttpEntity<>(env.getProperty("message"), null);
 
         ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, http, String.class);
-//        Date now = new Date();
-//        if (last == null){
-//            last = now;
-//        }
-//        else {
-//            System.out.println("***Last Run***" + last.toString());
-//            long diff = now.getTime() - last.getTime();
-//            String interval = env.getProperty("update.interval.seconds");
-//            if (interval != null && diff >= parseLong(interval)*1000){
-//                last = now;
-//            }
-//        }
     }
 }

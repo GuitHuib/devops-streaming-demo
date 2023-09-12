@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@EnableScheduling
 public class ScraperServiceImpl{
     //Reading data from property file to a list
     @Value("#{'${website.urls}'.split(',')}")
