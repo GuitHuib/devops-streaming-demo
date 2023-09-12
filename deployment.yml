@@ -10,10 +10,12 @@
     - name: Update package repositories
       apt:
         update_cache: yes
+      become: yes
 
     - name: Upgrade installed packages
       apt:
         upgrade: dist
+        become: yes
 
     - name: Install necessary packages on local
       apt:
