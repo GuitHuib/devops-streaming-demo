@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.scrapedemo.ResponseDTOTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-09-11T20:09:31" hostname="79GK7S3" time="0.245">
+  <properties/>
+  <testcase name="xStreamShouldConvertObjectToXml()" classname="com.example.scrapedemo.ResponseDTOTest" time="0.201"/>
+  <testcase name="xstreamShouldParseXmlIntoResponseDto()" classname="com.example.scrapedemo.ResponseDTOTest" time="0.043"/>
+  <system-out><![CDATA[<com.example.scrapedemo.ResponseDTO>
+  <title>new dto</title>
+  <url>url</url>
+</com.example.scrapedemo.ResponseDTO>
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
