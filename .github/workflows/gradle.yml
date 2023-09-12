@@ -47,10 +47,7 @@ jobs:
   Deploy:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
-
-
       - uses: actions/checkout@v2
       - name: Deploy in EC2
         env:
@@ -62,12 +59,12 @@ jobs:
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
           
-          git checkout master &&
+          #Now we have got the access of EC2 and we will start the deploy
+          cd /home/ubuntu &&
           git fetch --all &&
           git reset --hard origin/master &&
           git pull origin master &&
                
-          #Now we have got the access of EC2 and we will start the deploy .
           docker-compose -f docker-compose.yaml up -d --build
           
           
