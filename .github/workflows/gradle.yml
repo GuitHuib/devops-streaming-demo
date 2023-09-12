@@ -37,10 +37,21 @@ jobs:
         with:
           arguments: build
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ryan-demo.pem
+          chmod 600 ~/.ssh/ryan-demo.pem
+          ssh-keygen -y -f ~/.ssh/ryan-demo.pem > ~/.ssh/id_rsa
+          ssh-keyscan -H  35.174.101.105 >> ~/.ssh/known_hosts
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+
+
+#      - name: Set up SSH
+#        uses: webfactory/ssh-agent@v0.7.0
+#        with:
+#          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
       - name: SSH into EC2 and copy JAR file
         run: |
