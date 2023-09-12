@@ -17,35 +17,48 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  EC2-Deploy:
     runs-on: ubuntu-latest
-
+    environment:
+      name: ${{ github.ref_name }}
+      url: ${{ steps.deploy.outputs.vm_url }}
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-        with:
-          arguments: build
-
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh || true
-          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ryan-demo.pem
-          chmod 600 ~/.ssh/ryan-demo.pem
-          ssh-keygen -y -f ~/.ssh/ryan-demo.pem > ~/.ssh/id_rsa
-          ssh-keyscan -H  35.174.101.105 >> ~/.ssh/known_hosts
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+    - id: deploy
+      name: Deploy
+      uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.0
+      with:
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
+        aws_default_region: us-east-1
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Set up JDK 17
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#
+#      - name: Make gradlew executable
+#        run: chmod +x gradlew
+#
+#      - name: Build with Gradle
+#        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+#        with:
+#          arguments: build
+#
+#      - name: Set up SSH key
+#        run: |
+#          mkdir -p ~/.ssh || true
+#          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/ryan-demo.pem
+#          chmod 600 ~/.ssh/ryan-demo.pem
+#          ssh-keygen -y -f ~/.ssh/ryan-demo.pem > ~/.ssh/id_rsa
+#          ssh-keyscan -H  35.174.101.105 >> ~/.ssh/known_hosts
+#        env:
+#          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
 
 #      - name: Set up SSH
@@ -53,10 +66,10 @@ jobs:
 #        with:
 #          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: SSH into EC2 and copy JAR file
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ runner.workspace }}/${{ secrets.EC2_SSH_KEY }} ec2-user@YOUR_EC2_PUBLIC_IP 'mkdir -p ./build'
-          scp -i ${{ runner.workspace }}/${{ secrets.EC2_SSH_KEY }} ./build.jar ec2-user@YOUR_EC2_PUBLIC_IP:/path/on/ec2/
+#      - name: SSH into EC2 and copy JAR file
+#        run: |
+#          ssh -o StrictHostKeyChecking=no -i ${{ runner.workspace }}/${{ secrets.EC2_SSH_KEY }} ec2-user@YOUR_EC2_PUBLIC_IP 'mkdir -p ./build'
+#          scp -i ${{ runner.workspace }}/${{ secrets.EC2_SSH_KEY }} ./build.jar ec2-user@YOUR_EC2_PUBLIC_IP:/path/on/ec2/
 
 
 
