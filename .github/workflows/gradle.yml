@@ -35,13 +35,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-app-artifact
-          path: /build/libs/scrape-demo.jar
+          path: /build/libs/**.jar
 
       - name: Download JAR artifact
         uses: actions/download-artifact@v2
         with:
           name: my-app-artifact
-          path: /scrape-demo.jar
+          path: /build/libs/**.jar
           
 
   Deploy:
