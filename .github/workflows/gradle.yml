@@ -53,6 +53,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: my-app-artifact
+          path: build/libs
+
       - uses: actions/checkout@v2
       - name: Deploy in EC2
         env:
