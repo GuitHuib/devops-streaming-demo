@@ -3,17 +3,13 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "main" ]
 
 permissions:
   contents: read
 
 jobs:
-  #First we will see the application build or not , then we will deploy in EC2
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
 
@@ -30,7 +26,9 @@ jobs:
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
         with:
           arguments: build
-      - uses: actions/upload-artifact@v3
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
         with:
           name: Package
           path: build/libs
@@ -45,19 +43,48 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Deploy in EC2
-        env:
-          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
-          HOSTNAME : 35.174.101.105
-          USER_NAME : ${{ secrets.USER_NAME  }}
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
-          docker-compose -f docker-compose.yaml up -d --build
+      - name: Deploy to Server 1
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: 35.174.101.105
+          REMOTE_USER: ${{ secrets.USER_NAME }}
+
+#      - name: Set up Python
+#        uses: actions/setup-python@v3
+#        with:
+#          python-version: '3.x'
+
+#      - name: Install Ansible
+#        run: pip install ansible
+#
+#      - name: Deploy with Ansible
+#        env:
+#          HOST: 35.174.101.105
+#          JAR_SOURCE: "${{ github.workspace }}/build/libs/scrape-demo-0.0.1-SNAPSHOT.jar"
+#        run: ansible-playbook -i inventory.ini playbook.yml
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Deploy in EC2
+#        env:
+#          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
+#          HOSTNAME : 35.174.101.105
+#          USER_NAME : ${{ secrets.USER_NAME  }}
+#
+#        run: |
+#          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+#          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
+#          docker-compose -f docker-compose.yaml up -d --build
           
-          
+
+
+
+
+
 
 #jobs:
 #  build:

@@ -1,0 +1,56 @@
+- name: Provision Infrastructure
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - vars.yml
+  environment:
+    ANSIBLE_HOST_KEY_CHECKING: False
+
+  tasks:
+    - name: Add new host to inventory
+      add_host:
+        hostname: ansible_env.HOST
+        groups: webservers
+
+- name: Deploy and Setup Spring Boot app
+  hosts: webservers
+  gather_facts: no
+  vars_files:
+    - vars.yml
+  become: yes
+
+  tasks:
+    - name: Wait for SSH to become available
+      wait_for_connection:
+        delay: 10
+        timeout: 320
+
+- name: Run Docker Compose
+  hosts: webservers
+  vars_files:
+    - vars.yml
+  become: yes
+  tasks:
+    - name: Ensure Docker service is running
+      systemd:
+        name: docker
+        state: started
+
+    - name: Copy Spring Boot app to server
+      copy:
+        src: "{{ ansible_env.JAR_FILE_PATH }}"
+        dest: ./build/libs/scrape-demo-0.0.1-SNAPSHOT.jar
+        mode: '0755'
+
+    - name: Transfer Dockerfile
+      copy:
+        src: ./Dockerfile
+        dest: Dockerfile
+
+    - name: Transfer Docker Compose Files
+      copy:
+        src: ./docker-compose.yaml
+        dest: docker-compose.yaml
+
+    - name: Run Docker Compose
+      command: docker-compose -f docker-compose.yaml up -d

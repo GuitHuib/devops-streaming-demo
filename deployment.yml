@@ -53,6 +53,7 @@
       wait_for_connection:
         delay: 10
         timeout: 320
+
     - name: Update package cache
       apt:
         update_cache: yes
