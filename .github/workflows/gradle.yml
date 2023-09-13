@@ -53,7 +53,8 @@ jobs:
 
       - name: Deploy application
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_KEY }} ubuntu@35.174.101.105
+          echo ${{ secrets.EC2_SSH_KEY }} > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
 
 #      - name: Set up SSH key
 #        run: echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/aws.pem && chmod 600 ~/.ssh/aws.pem
