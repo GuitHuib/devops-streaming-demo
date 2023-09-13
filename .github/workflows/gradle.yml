@@ -46,13 +46,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up SSH key
-        run: echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/aws.pem && chmod 600 ~/.ssh/aws.pem
+#      - name: Set up SSH key
+#        run: echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/aws.pem && chmod 600 ~/.ssh/aws.pem
 
       - name: Deploy to Server 1
         uses: easingthemes/ssh-deploy@main
         env:
-          SSH_PRIVATE_KEY: /.ssh/aws.pem
+          SSH_PRIVATE_KEY: ${{ secrets.AWS_PEM_KEY }}
           REMOTE_HOST: 35.174.101.105
           REMOTE_USER: ${{ secrets.USER_NAME }}
 
