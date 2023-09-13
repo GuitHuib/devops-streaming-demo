@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
 #  build:
@@ -51,16 +51,22 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: Deploy application
-        env:
-          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
-          HOSTNAME : 35.174.101.105
-          USER_NAME : ${{ secrets.USER_NAME  }}
+      - name: Copy files to EC2 server
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          scp -o StrictHostKeyChecking=no -i private_key build/libs/**.jar ubuntu@35.174.101.105:build/libs/
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
-          docker-compose up -d --build
+          ssh ubuntu@35.174.101.105 'mkdir -p /path/to/destination'
+          scp -i ${{ secrets.EC2_SSH_KEY }} -r build/libs/**.jar ubuntu@35.174.101.105:/path/to/destination
+
+
+#      - name: Deploy application
+#        env:
+#          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
+#          HOSTNAME : 35.174.101.105
+#          USER_NAME : ${{ secrets.USER_NAME  }}
+#        run: |
+#          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+#          scp -o StrictHostKeyChecking=no -i private_key build/libs/**.jar ubuntu@35.174.101.105:build/libs/
+#          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
+#          docker-compose up -d --build
 
 #      - name: Set up SSH key
 #        run: echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/aws.pem && chmod 600 ~/.ssh/aws.pem
