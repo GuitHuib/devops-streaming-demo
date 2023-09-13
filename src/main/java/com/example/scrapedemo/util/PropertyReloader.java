@@ -24,7 +24,7 @@ public class PropertyReloader {
     }
 
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 50000)
     public void refreshProperties() {
         RestTemplate template = new RestTemplate();
         System.out.println("***running***" + env.getProperty("message"));
