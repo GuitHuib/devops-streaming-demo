@@ -46,15 +46,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: "us-east-1"
+
+
 #      - name: Set up SSH key
 #        run: echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/aws.pem && chmod 600 ~/.ssh/aws.pem
 
-      - name: Deploy to Server 1
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: test_file # ${{ secrets.EC2_SSH_KEY }}
-          REMOTE_HOST: 35.174.101.105
-          REMOTE_USER: ${{ secrets.USER_NAME }}
+#      - name: Deploy to Server 1
+#        uses: easingthemes/ssh-deploy@main
+#        env:
+#          SSH_PRIVATE_KEY: test_file # ${{ secrets.EC2_SSH_KEY }}
+#          REMOTE_HOST: 35.174.101.105
+#          REMOTE_USER: ${{ secrets.USER_NAME }}
 
 #      - name: Set up Python
 #        uses: actions/setup-python@v3
