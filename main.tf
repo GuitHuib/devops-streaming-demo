@@ -10,8 +10,6 @@ terraform {
 # Configure the AWS Provider
 provider "aws" {
   region = "us-east-1"
-  access_key = "AKIA22GDOLHDWKOMP6U5"
-  secret_key = "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"
 }
 
 #1. Create vpc (virtual private cloud)
@@ -131,6 +129,8 @@ resource "aws_eip" "one" {
 resource "aws_instance" "web-server-instance" {
   ami           = "ami-053b0d53c279acc90"
   instance_type = "t2.micro"
+  # todo: iam role with ec2 full access permissions
+  iam_instance_profile = "ec2AdminDemo"
   availability_zone = "us-east-1a"
   # todo: update to appropriate instance key
   # your aws key pair
