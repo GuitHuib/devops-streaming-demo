@@ -58,8 +58,9 @@ jobs:
           USER_NAME : ${{ secrets.USER_NAME  }}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          scp -o StrictHostKeyChecking=no -i private_key build/libs/**.jar ubuntu@35.174.101.105:build/libs/
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
-          docker-compose up --build
+          docker-compose up -d --build
 
 #      - name: Set up SSH key
 #        run: echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/aws.pem && chmod 600 ~/.ssh/aws.pem
