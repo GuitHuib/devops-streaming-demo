@@ -55,9 +55,8 @@ jobs:
 
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
           scp -o StrictHostKeyChecking=no -i private_key build/libs/**.jar ubuntu@35.174.101.105:build/libs/
-
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
           docker-compose -f docker-compose.yaml up -d --build
           
           
