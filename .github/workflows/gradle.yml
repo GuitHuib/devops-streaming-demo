@@ -40,34 +40,22 @@ jobs:
         with:
           name: Package
           path: "${{ github.workspace }}/build/libs"
-          
 
-  EC2-Deploy:
+  Deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - id: deploy
-        uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.0
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_default_region: us-east-1
+      - uses: actions/checkout@v3
+      - name: Deploy in EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
+          HOSTNAME : 35.174.101.105
+          USER_NAME : ${{ secrets.USER_NAME  }}
 
-#  Deploy:
-#    needs: build
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Deploy in EC2
-#        env:
-#          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
-#          HOSTNAME : 35.174.101.105
-#          USER_NAME : ${{ secrets.USER_NAME  }}
-#
-#        run: |
-#          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-#          scp -o StrictHostKeyChecking=no -i private_key build/libs/**.jar ubuntu@35.174.101.105:build/libs/
-#          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
-#          docker-compose -f docker-compose.yaml up -d --build
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
+          docker-compose -f docker-compose.yaml up -d --build
           
           
 
@@ -76,7 +64,7 @@ jobs:
 #    runs-on: ubuntu-latest
 #
 
-
+#               scp -o StrictHostKeyChecking=no -i private_key build/libs/**.jar ubuntu@35.174.101.105:build/libs/
 #               scp -o StrictHostKeyChecking=no -i private_key "${{ github.workspace }}/build/libs/scrape-demo.jar" ubuntu@35.174.101.105:/build/libs/
 
 #      - name: Build the docker_compose
