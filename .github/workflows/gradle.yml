@@ -54,7 +54,7 @@ jobs:
       - name: Copy files to EC2 server
         run: |
           ssh ubuntu@35.174.101.105 'mkdir -p /path/to/destination'
-          scp -i ${{ secrets.EC2_SSH_KEY }} -r build/libs/**.jar ubuntu@35.174.101.105:/path/to/destination
+#          scp -i ${{ secrets.EC2_SSH_KEY }} -r build/libs/**.jar ubuntu@35.174.101.105:/path/to/destination
 
 
 #      - name: Deploy application
