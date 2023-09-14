@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
 
   myapp:
-    image: cicd-demo:latest
+    image: cicd-demo
 
 #  build-app:
 #    build:
