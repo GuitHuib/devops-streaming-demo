@@ -96,7 +96,7 @@ jobs:
 #          chmod 600 private_key
 #        env:
 #          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-#
+
 #      - name: Copy files to EC2 server
 #        run: |
 #          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 'mkdir -p /path/to/destination'
