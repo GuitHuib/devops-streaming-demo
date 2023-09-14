@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
 
   myapp:
-    image: cicd-demo:latest
+    image: ghcr.io/guithuib/cicd-demo:latest
 
 #  build-app:
 #    build:
