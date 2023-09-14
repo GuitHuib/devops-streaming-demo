@@ -58,13 +58,14 @@ jobs:
           USER_NAME : ${{ secrets.USER_NAME  }}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 
-              docker pull ghcr.io/guithuib/cicd-demo:latest
-              docker-compose up -d --build
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 'bash -s' << EOF
+            docker pull ghcr.io/guithuib/cicd-demo:latest
+            docker-compose -f /path/to/your/docker-compose.yml up -d --build
+          EOF
           
           
           
-          #      - name: Set up SSH keys
+#      - name: Set up SSH keys
 #        uses: webfactory/ssh-agent@v0.7.0
 #        with:
 #          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
