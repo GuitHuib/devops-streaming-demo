@@ -43,8 +43,8 @@ jobs:
 #    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - name: build and publish image
         run: |
           docker login --username GuitHuib --password ${{ secrets.GH_PAT }}
           docker build . --tag ghcr.io/deselikem/cicd-demo:latest
