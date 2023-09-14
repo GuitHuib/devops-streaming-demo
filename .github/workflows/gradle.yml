@@ -4,9 +4,6 @@ on:
   push:
     branches: [ "master" ]
 
-permissions:
-  contents: read
-
 jobs:
 #  build:
 #    runs-on: ubuntu-latest
@@ -44,9 +41,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: guithuib
+          password: ${{ secrets.GH_PAT }}
       - name: build and publish image
         run: |
-          docker login --username GuitHuib --password ${{ secrets.GH_PAT }} ghrc.io
+#          docker login --username guithuib --password ${{ secrets.GH_PAT }} ghrc.io
           docker build . --tag ghcr.io/guithuib/cicd-demo:latest
           docker push ghcr.io/guithuib/cicd-demo:latest
         
