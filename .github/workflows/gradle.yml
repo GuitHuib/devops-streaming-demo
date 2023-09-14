@@ -53,7 +53,7 @@ jobs:
 
       - name: Copy files to EC2 server
         run: |
-          ssh -i ${{ secrets.EC2_SSH_KEY }} ubuntu@35.174.101.105 'mkdir -p /path/to/destination'
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_KEY }} ubuntu@35.174.101.105 'mkdir -p /path/to/destination'
 #          scp -i ${{ secrets.EC2_SSH_KEY }} -r build/libs/**.jar ubuntu@35.174.101.105:/path/to/destination
 
 
