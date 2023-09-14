@@ -49,7 +49,6 @@ jobs:
           password: ${{ secrets.GH_PAT }}
       - name: build and publish image
         run: |
-#          docker login --username guithuib --password ${{ secrets.GH_PAT }} ghrc.io
           docker build . --tag ghcr.io/guithuib/cicd-demo:latest
           docker push ghcr.io/guithuib/cicd-demo:latest
         
