@@ -52,6 +52,10 @@ jobs:
           docker build . --tag ghcr.io/guithuib/cicd-demo:latest
           docker push ghcr.io/guithuib/cicd-demo:latest
       - name: Docker compose on remote server
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
+          HOSTNAME : 35.174.101.105
+          USER_NAME : ${{ secrets.USER_NAME  }}
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 
               docker pull ghcr.io/guithuib/cicd-demo:latest
