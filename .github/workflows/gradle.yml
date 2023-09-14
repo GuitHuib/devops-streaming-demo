@@ -54,10 +54,9 @@ jobs:
       - name: Add host to known_hosts
         run: ssh-keyscan -H 35.174.101.105 >> ~/.ssh/known_hosts
 
-
       - name: Copy files to EC2 server
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          echo ${{ secrets.EC2_SSH_KEY  }} > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 'mkdir -p /path/to/destination'
 #          scp -i ${{ secrets.EC2_SSH_KEY }} -r build/libs/**.jar ubuntu@35.174.101.105:/path/to/destination
 
@@ -76,12 +75,6 @@ jobs:
 #      - name: Set up SSH key
 #        run: echo "${{ secrets.AWS_PEM_KEY }}" > ~/.ssh/aws.pem && chmod 600 ~/.ssh/aws.pem
 
-#      - name: Deploy to Server 1
-#        uses: easingthemes/ssh-deploy@main
-#        env:
-#          SSH_PRIVATE_KEY: test_file # ${{ secrets.EC2_SSH_KEY }}
-#          REMOTE_HOST: 35.174.101.105
-#          REMOTE_USER: ${{ secrets.USER_NAME }}
 
 #      - name: Set up Python
 #        uses: actions/setup-python@v3
@@ -96,19 +89,7 @@ jobs:
 #          HOST: 35.174.101.105
 #          JAR_SOURCE: "${{ github.workspace }}/build/libs/scrape-demo-0.0.1-SNAPSHOT.jar"
 #        run: ansible-playbook -i inventory.ini playbook.yml
-#
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Deploy in EC2
-#        env:
-#          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
-#          HOSTNAME : 35.174.101.105
-#          USER_NAME : ${{ secrets.USER_NAME  }}
-#
-#        run: |
-#          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-#          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105
-#          docker-compose -f docker-compose.yaml up -d --build
+
           
 
 
