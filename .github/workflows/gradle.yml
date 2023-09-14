@@ -51,10 +51,15 @@ jobs:
         run: |
           docker build . --tag ghcr.io/guithuib/cicd-demo:latest
           docker push ghcr.io/guithuib/cicd-demo:latest
-        
-      
-
-#      - name: Set up SSH keys
+      - name: Docker compose on remote server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 
+              docker pull ghcr.io/guithuib/cicd-demo:latest
+              docker-compose up -d --build
+          
+          
+          
+          #      - name: Set up SSH keys
 #        uses: webfactory/ssh-agent@v0.7.0
 #        with:
 #          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
