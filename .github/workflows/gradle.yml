@@ -57,6 +57,7 @@ jobs:
           HOSTNAME : 35.174.101.105
           USER_NAME : ${{ secrets.USER_NAME  }}
         run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 
               docker pull ghcr.io/guithuib/cicd-demo:latest
               docker-compose up -d --build
