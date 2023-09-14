@@ -187,25 +187,3 @@ jobs:
 #      - name: Copy JAR file
 #        run: scp -i ~/.ssh/your-ec2-key.pem path/to/your.jar ec2-user@your-ec2-instance-ip:/path/on/ec2/
 
-
-
-#      - name: Install Dependencies
-#        run: pip install ansible
-#
-#      - name: Run Ansible Playbook
-#        run: ansible-playbook deployment.yml
-
-
-#  EC2-Deploy:
-#    runs-on: ubuntu-latest
-#    environment:
-#      name: ${{ github.ref_name }}
-#      url: 3.210.104.127
-#    steps:
-#      - id: deploy
-#        name: Deploy
-#        uses: bitovi/github-actions-deploy-docker-to-ec2@v0.5.0
-#        with:
-#          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID}}
-#          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-#          aws_default_region: us-east-1
