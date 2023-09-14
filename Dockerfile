@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy the Gradle build files and dependencies to the container
 COPY build/libs/*.jar /app/scrape-demo.jar
 
+COPY src/main/resources/application.properties /app/application.properties
+
 # Expose a port (if your Spring Boot app uses a specific port)
 #EXPOSE 8080
 
