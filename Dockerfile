@@ -5,7 +5,7 @@ FROM openjdk:17-oracle
 WORKDIR /app
 
 # Copy the Gradle build files and dependencies to the container
-COPY ${{ github.workspace }}/build/libs/*.jar /app/scrape-demo.jar
+COPY build/libs/*.jar /app/scrape-demo.jar
 
 # Expose a port (if your Spring Boot app uses a specific port)
 #EXPOSE 8080

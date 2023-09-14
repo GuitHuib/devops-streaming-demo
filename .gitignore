@@ -1,6 +1,6 @@
 HELP.md
 .gradle
-build/
+!build/libs/**
 build/classes
 build/generated
 build/reports
