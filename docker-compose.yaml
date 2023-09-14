@@ -11,11 +11,14 @@ services:
       - "5432:5432"
     restart: unless-stopped
 
-  build-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: myapp
+  myapp:
+    image: cicd-demo:latest
+
+#  build-app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: myapp
 
     depends_on:
       - db
