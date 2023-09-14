@@ -47,10 +47,24 @@ jobs:
           registry: ghcr.io
           username: guithuib
           password: ${{ secrets.GH_PAT }}
-      - name: build and publish image
+
+      - name: Set up Docker Buildx
+        id: docker_buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and Push Docker Image
         run: |
-          docker build . --tag ghcr.io/guithuib/cicd-demo:latest
-          docker push ghcr.io/guithuib/cicd-demo:latest
+          docker buildx create --use
+          docker buildx build -t ghcr.io/guithuib/cicd-demo:latest . --push
+        env:
+          DOCKER_CLI: docker
+          DOCKER_BUILDKIT: 1
+        timeout-minutes: 10
+
+#      - name: build and publish image
+#        run: |
+#          docker build . --tag ghcr.io/guithuib/cicd-demo:latest
+#          docker push ghcr.io/guithuib/cicd-demo:latest
       - name: Docker compose on remote server
         env:
           PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY  }}
