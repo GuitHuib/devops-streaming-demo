@@ -48,7 +48,6 @@ jobs:
         run: |
           docker login --username GuitHuib --password ${{ secrets.GH_PAT }} ghrc.io
           docker build . --tag ghcr.io/deselikem/cicd-demo:latest
-          docker run ghcr.io/deselikem/cicd-demo:latest
           docker push ghcr.io/deselikem/cicd-demo:latest
         
       
