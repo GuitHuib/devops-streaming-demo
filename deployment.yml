@@ -74,6 +74,17 @@
         name: docker
         state: started
 
+    - name: Add Docker Group
+      group:
+        name: docker
+        state: present
+
+    - name: Add User to Docker Group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
     - name: Pull Docker Image from GHCR
       docker_image:
         name: ghcr.io/guithuib/cicd-demo:latest
