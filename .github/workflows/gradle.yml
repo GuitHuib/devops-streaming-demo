@@ -60,8 +60,9 @@ jobs:
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 'bash -s' << EOF
             docker pull ghcr.io/guithuib/cicd-demo:latest
-            docker-compose -f /path/to/your/docker-compose.yml up -d --build
+            docker-compose -f up -d --build
           EOF
+
           
           
           
