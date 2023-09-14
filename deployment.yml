@@ -64,44 +64,20 @@
         name: "{{ item }}"
         state: present
       loop:
-        - openjdk-17-jdk
         - unzip
         - python3-pip
         - docker.io
         - docker-compose
 
-    - name: Install Firefox
-      apt:
-        name: firefox
-        state: present
-
-
-- name: Run Docker Compose
-  hosts: webservers
-  vars_files:
-    - vars.yml
-  become: yes
-  tasks:
     - name: Ensure Docker service is running
       systemd:
         name: docker
         state: started
 
-    - name: Create Spring Boot directory
-      file:
-        path: ./build/libs
-        state: directory
-
-    - name: Copy Spring Boot app to server
-      copy:
-        src: ./build/libs/scrape-demo-0.0.1-SNAPSHOT.jar
-        dest: ./build/libs/scrape-demo-0.0.1-SNAPSHOT.jar
-        mode: '0755'
-
-    - name: Transfer Dockerfile
-      copy:
-        src: ./Dockerfile
-        dest: Dockerfile
+    - name: Pull Docker Image from GHCR
+      docker_image:
+        name: ghcr.io/guithuib/cicd-demo:latest
+        source: pull
 
     - name: Transfer Docker Compose Files
       copy:
@@ -110,40 +86,3 @@
 
     - name: Run Docker Compose
       command: docker-compose -f docker-compose.yaml up -d
-
-
-        #    - name: Copy Docker Image
-        #      copy:
-        #        src: /path/to/your-image.tar
-        #        dest: /tmp/your-image.tar
-        #
-      #    - name: Build Docker Image
-    #      docker_image:
-    #        name: scrape-demo:tag  # Specify the name and tag for your image
-    #        source: build
-    #        build:
-    #          dockerfile: Dockerfile  # Path to your Dockerfile
-    #          path: ./
-    #
-    #    - name: Display Build Output
-    #      debug:
-    #        var: build_result.stdout_lines
-
-    #    - name: Save Local Docker Image
-    #      docker_image:
-    #        name: sync-app:tag
-    #        save_dest: sync-app.tar
-    #        state: save
-    #
-    #    - name: archive container image as a tarball
-    #      docker_image:
-    #        name: sync-app:v1.0
-    #        archive_path: ./sync-app.tar
-    #        source: pull
-    #        state: present
-    #
-    #    - name: fetch archived image
-    #      fetch:
-    #        src: sync-app.tar
-    #        dest: sync-app.tar
-    #        flat: true
