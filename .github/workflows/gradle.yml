@@ -45,25 +45,32 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Set up SSH keys
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
-
-      - name: Add host to known_hosts
-        run: ssh-keyscan -H 35.174.101.105 >> ~/.ssh/known_hosts
-
-      - name: Create SSH Private Key File
         run: |
-          echo "$EC2_SSH_KEY" > private_key
-          chmod 600 private_key
-        env:
-          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          docker login --username GuitHuib --password ${{ secrets.GH_PAT }}
+          docker build . --tag ghcr.io/deselikem/cicd-demo:latest
+          docker run ghcr.io/deselikem/cicd-demo:latest
+          docker push ghcr.io/deselikem/cicd-demo:latest
+        
+      
 
-      - name: Copy files to EC2 server
-        run: |
-          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 'mkdir -p /path/to/destination'
+#      - name: Set up SSH keys
+#        uses: webfactory/ssh-agent@v0.7.0
+#        with:
+#          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+#
+#      - name: Add host to known_hosts
+#        run: ssh-keyscan -H 35.174.101.105 >> ~/.ssh/known_hosts
+#
+#      - name: Create SSH Private Key File
+#        run: |
+#          echo "$EC2_SSH_KEY" > private_key
+#          chmod 600 private_key
+#        env:
+#          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+#
+#      - name: Copy files to EC2 server
+#        run: |
+#          ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 'mkdir -p /path/to/destination'
 #          scp -i ${{ secrets.EC2_SSH_KEY }} -r build/libs/**.jar ubuntu@35.174.101.105:/path/to/destination
 
 
