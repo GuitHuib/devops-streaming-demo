@@ -92,12 +92,12 @@
 
     - name: Transfer Docker Compose File
       copy:
-        src: ./docker-compose.yaml
+        src: docker-compose.yaml
         dest: docker-compose.yaml
 
     - name: Transfer env File
       copy:
-        src: ./.env
+        src: .env
         dest: .env
 
     - name: Run Docker Compose
