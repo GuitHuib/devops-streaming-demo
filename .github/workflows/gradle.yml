@@ -61,8 +61,8 @@ jobs:
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 'bash -s' << EOF
           
-            sudo echo "VAR_1=${VAR_1}" > .env
-            sudo echo "VAR_2=${VAR_2}" >> .env
+            echo "VAR_1=${VAR_1}" | sudo tee .env > /dev/null
+            echo "VAR_2=${VAR_2}" | sudo tee -a .env > /dev/null
           
             docker login ghcr.io -u guithuib -p "$GH_PAT"
             docker pull ghcr.io/guithuib/cicd-demo:latest
