@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.example.scrapedemo.ScrapeDemoApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-09-14T06:03:34" hostname="79GK7S3" time="0.77">
+<testsuite name="com.example.scrapedemo.ScrapeDemoApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-09-15T20:25:41" hostname="79GK7S3" time="0.785">
   <properties/>
-  <testcase name="contextLoads()" classname="com.example.scrapedemo.ScrapeDemoApplicationTests" time="0.77"/>
-  <system-out><![CDATA[23:03:32.959 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.scrapedemo.ScrapeDemoApplicationTests]: ScrapeDemoApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-23:03:33.034 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.scrapedemo.ScrapeDemoApplication for test class com.example.scrapedemo.ScrapeDemoApplicationTests
+  <testcase name="contextLoads()" classname="com.example.scrapedemo.ScrapeDemoApplicationTests" time="0.785"/>
+  <system-out><![CDATA[13:25:39.722 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.scrapedemo.ScrapeDemoApplicationTests]: ScrapeDemoApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+13:25:39.799 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.scrapedemo.ScrapeDemoApplication for test class com.example.scrapedemo.ScrapeDemoApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -13,11 +13,14 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.1.3)
 
-2023-09-13T23:03:33.332-07:00  INFO 41008 --- [    Test worker] c.e.s.ScrapeDemoApplicationTests         : Starting ScrapeDemoApplicationTests using Java 20.0.1 with PID 41008 (started by York Laptop 024 in C:\Users\York Laptop 024\IdeaProjects\scrape-demo)
-2023-09-13T23:03:33.333-07:00  INFO 41008 --- [    Test worker] c.e.s.ScrapeDemoApplicationTests         : No active profile set, falling back to 1 default profile: "default"
-2023-09-13T23:03:33.828-07:00  INFO 41008 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5b0a897d-6c96-3897-a377-0ab5d34ecc77
-2023-09-13T23:03:34.455-07:00  INFO 41008 --- [    Test worker] c.e.s.ScrapeDemoApplicationTests         : Started ScrapeDemoApplicationTests in 1.319 seconds (process running for 2.437)
-***running***"new message changed again"
+2023-09-15T13:25:40.119-07:00  INFO 42580 --- [    Test worker] c.e.s.ScrapeDemoApplicationTests         : Starting ScrapeDemoApplicationTests using Java 20.0.1 with PID 42580 (started by York Laptop 024 in C:\Users\York Laptop 024\IdeaProjects\scrape-demo)
+2023-09-15T13:25:40.120-07:00  INFO 42580 --- [    Test worker] c.e.s.ScrapeDemoApplicationTests         : No active profile set, falling back to 1 default profile: "default"
+2023-09-15T13:25:40.612-07:00  INFO 42580 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5b0a897d-6c96-3897-a377-0ab5d34ecc77
+2023-09-15T13:25:41.293-07:00  INFO 42580 --- [    Test worker] c.e.s.ScrapeDemoApplicationTests         : Started ScrapeDemoApplicationTests in 1.385 seconds (process running for 2.486)
+***var_1 from system = null
+***var_1 from env = null
+***var_2 from system =null
+***var_2 from env =null
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

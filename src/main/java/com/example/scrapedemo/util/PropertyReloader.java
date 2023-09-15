@@ -1,6 +1,7 @@
 package com.example.scrapedemo.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -24,12 +25,15 @@ public class PropertyReloader {
     }
 
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRateString = "${interval.seconds}")
     public void refreshProperties() {
         RestTemplate template = new RestTemplate();
-        System.out.println("***running***" + env.getProperty("message"));
+        System.out.println("***var_1 from system = " + System.getenv("var_1"));
+        System.out.println("***var_1 from env = " + env.getProperty("var_1"));
+        System.out.println("***var_2 from system =" + System.getenv("var_2"));
+        System.out.println("***var_2 from env =" + env.getProperty("var_2"));
         String url = "https://webhook.site/e5aa58b8-4638-4f8c-85ea-3e639445070b";
-        HttpEntity<String> http = new HttpEntity<>(env.getProperty("message"), null);
+        HttpEntity<String> http = new HttpEntity<>(env.getProperty("var_1"), null);
 
         ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, http, String.class);
     }

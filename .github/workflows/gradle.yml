@@ -53,9 +53,17 @@ jobs:
           HOSTNAME : 35.174.101.105
           USER_NAME : ${{ secrets.USER_NAME  }}
           GH_PAT: ${{ secrets.GH_PAT }}
+
+          VAR_1: ${{ secrets.VAR_1 }}
+          VAR_2: ${{ secrets.value2 }}
+
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ubuntu@35.174.101.105 'bash -s' << EOF
+          
+            echo "VAR_1=${VAR_1}" > .env
+            echo "VAR_2=${VAR_2}" >> .env
+          
             docker login ghcr.io -u guithuib -p "$GH_PAT"
             docker pull ghcr.io/guithuib/cicd-demo:latest
             docker-compose up -d --build

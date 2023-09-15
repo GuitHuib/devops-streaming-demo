@@ -90,10 +90,15 @@
         name: ghcr.io/guithuib/cicd-demo:latest
         source: pull
 
-    - name: Transfer Docker Compose Files
+    - name: Transfer Docker Compose File
       copy:
         src: ./docker-compose.yaml
         dest: docker-compose.yaml
+
+    - name: Transfer env File
+      copy:
+        src: ./.env
+        dest: .env
 
     - name: Run Docker Compose
       command: docker-compose -f docker-compose.yaml up -d
