@@ -32,7 +32,7 @@ public class PropertyReloader {
         System.out.println("***var_1 from env = " + env.getProperty("var_1"));
         System.out.println("***var_2 from system =" + System.getenv("var_2"));
         System.out.println("***var_2 from env =" + env.getProperty("var_2"));
-        String url = "https://webhook.site/e5aa58b8-4638-4f8c-85ea-3e639445070b";
+        String url = "https://webhook.site/67a4c4d4-e269-4e6a-a163-97a26309b33c";
         HttpEntity<String> http = new HttpEntity<>(env.getProperty("var_1"), null);
 
         ResponseEntity<String> response = template.exchange(url, HttpMethod.POST, http, String.class);

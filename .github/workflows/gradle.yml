@@ -55,7 +55,7 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
 
           VAR_1: ${{ secrets.VAR_1 }}
-          VAR_2: ${{ secrets.value2 }}
+          VAR_2: ${{ secrets.VAR_2 }}
 
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
