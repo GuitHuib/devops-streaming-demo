@@ -1,8 +1,6 @@
 - name: Provision Infrastructure
   hosts: localhost
   gather_facts: False
-  vars_files:
-    - vars.yml
   environment:
     ANSIBLE_HOST_KEY_CHECKING: False
 
@@ -26,7 +24,7 @@
 
     - name: Run terraform
       community.general.terraform:
-        project_path: "{{ local_terraform_directory }}"
+        project_path: ./
         force_init: true
         state: present
       register: terraform_output
@@ -44,8 +42,9 @@
 - name: Deploy and Setup Spring Boot app
   hosts: webservers
   gather_facts: no
-  vars_files:
-    - vars.yml
+  vars:
+    ansible_ssh_private_key_file: ../ryan-demo.pem
+    ansible_user: ubuntu
   become: yes
 
   tasks:
